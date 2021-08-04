@@ -34,7 +34,7 @@ Module Module_SendMessage
     ''' <param name="ChildCaption">Target Child Text</param>
     ''' <param name="Message">Payload data</param>
     ''' <returns></returns>
-    Public Function SendData(WindowCaption As String, ChildCaption As String, Message As String) As Boolean
+    Public Function SendData(WindowCaption As String, ChildCaption As String, Message As String) As IntPtr
         'Find Target Application Handle
         Dim Hwnd As IntPtr = FindWindow(vbNullString, WindowCaption)
         'Get first child handle
@@ -49,8 +49,7 @@ Module Module_SendMessage
             'Get child caption text
             If Caption.ToString = ChildCaption Then
                 'If target child caption text is found, send the message to it and exit the function
-                SendData = SendMessage(HwndChild, WM_SETTEXT, Message.Length, Message)
-                Exit Function
+                Return SendMessage(HwndChild, WM_SETTEXT, Message.Length, Message)
             End If
             'Store all unique child handles in the dictionary so we don't infinitely loop
             If Not ChildHandles.ContainsKey(HwndChild) Then
